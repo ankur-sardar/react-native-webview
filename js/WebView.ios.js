@@ -34,6 +34,7 @@ import type {
   WebViewNavigationEvent,
   WebViewSharedProps,
   WebViewSource,
+  WebViewProgressEvent,
 } from './WebViewTypes';
 
 const resolveAssetSource = Image.resolveAssetSource;
@@ -150,6 +151,14 @@ class WebView extends React.Component<WebViewSharedProps, State> {
         'The scalesPageToFit property is not supported when useWebKit = true',
       );
     }
+    if (
+      !this.props.useWebKit &&
+      this.props.allowsBackForwardNavigationGestures
+    ) {
+      console.warn(
+        'The allowsBackForwardNavigationGestures property is not supported when useWebKit = false',
+      );
+    }
   }
 
   render() {
@@ -260,9 +269,12 @@ class WebView extends React.Component<WebViewSharedProps, State> {
         automaticallyAdjustContentInsets={
           this.props.automaticallyAdjustContentInsets
         }
+        hideKeyboardAccessoryView={this.props.hideKeyboardAccessoryView}
+        allowsBackForwardNavigationGestures={this.props.allowsBackForwardNavigationGestures}
         onLoadingStart={this._onLoadingStart}
         onLoadingFinish={this._onLoadingFinish}
         onLoadingError={this._onLoadingError}
+        onLoadingProgress={this._onLoadingProgress}
         messagingEnabled={messagingEnabled}
         onMessage={this._onMessage}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
@@ -419,6 +431,11 @@ class WebView extends React.Component<WebViewSharedProps, State> {
     const { onMessage } = this.props;
     onMessage && onMessage(event);
   };
+
+  _onLoadingProgress = (event: WebViewProgressEvent) => {
+    const {onLoadProgress} = this.props;
+    onLoadProgress && onLoadProgress(event);
+  }
 
   componentDidUpdate(prevProps: WebViewSharedProps) {
     if (!(prevProps.useWebKit && this.props.useWebKit)) {
