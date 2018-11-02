@@ -260,7 +260,7 @@ class WebView extends React.Component<WebViewSharedProps, State> {
   };
 
   // Bookmarklet handling
-  evaluateJavaScript = (js) => {
+  evaluateJavaScript = (js: string) => {
     this.injectJavaScript(js);
   };
 

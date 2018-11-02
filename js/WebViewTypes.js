@@ -241,6 +241,17 @@ export type AndroidWebViewProps = $ReadOnly<{|
      * @platform ios
      */
   onShouldCreateNewWindow?: (event: any) => mixed,
+
+  /**
+   * Hanldle Capture Screen in android webview  */
+
+  onCaptureScreen?: (event: any) => mixed,
+
+  /**
+   * Ask for GeoLocation Permission in android
+   */
+  onLocationAskPermission?: (event: any) => mixed,
+  /**
    * https://developer.android.com/reference/android/view/View#OVER_SCROLL_NEVER
    * Sets the overScrollMode. Possible values are:
    *
@@ -345,7 +356,7 @@ export type AndroidWebViewProps = $ReadOnly<{|
   *
   * See [RefreshControl](https://facebook.github.io/react-native/docs/refreshcontrol.html).
   */
-  refreshControl?: ?element,
+  refreshControl?: ?Element<any>,
 |}>;
 
 export type WebViewSharedProps =  $ReadOnly<{|
