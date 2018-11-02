@@ -35,6 +35,7 @@ import type {
   WebViewNavigationEvent,
   WebViewSharedProps,
   WebViewSource,
+  WebViewProgressEvent,
 } from './WebViewTypes';
 
 const resolveAssetSource = Image.resolveAssetSource;
@@ -62,6 +63,7 @@ type State = {|
  */
 class WebView extends React.Component<WebViewSharedProps, State> {
   static defaultProps = {
+    overScrollMode: 'always',
     javaScriptEnabled: true,
     thirdPartyCookiesEnabled: true,
     scalesPageToFit: true,
@@ -150,6 +152,7 @@ class WebView extends React.Component<WebViewSharedProps, State> {
         messagingEnabled={typeof this.props.onMessage === 'function'}
         onMessage={this.onMessage}
         onLsMessage={this.onLsMessage}
+        overScrollMode={this.props.overScrollMode}
         contentInset={this.props.contentInset}
         onShouldStartLoadWithRequest={this.props.onShouldStartLoadWithRequest}
         automaticallyAdjustContentInsets={
@@ -159,6 +162,7 @@ class WebView extends React.Component<WebViewSharedProps, State> {
         onLoadingStart={this.onLoadingStart}
         onLoadingFinish={this.onLoadingFinish}
         onLoadingError={this.onLoadingError}
+        onLoadingProgress={this.onLoadingProgress}
         testID={this.props.testID}
         geolocationEnabled={this.props.geolocationEnabled}
         mediaPlaybackRequiresUserAction={
@@ -371,6 +375,11 @@ class WebView extends React.Component<WebViewSharedProps, State> {
     onLsMessage && onLsMessage(event);
   };
 
+  
+  onLoadingProgress = (event: WebViewProgressEvent) => {
+    const { onLoadProgress} = this.props;
+    onLoadProgress && onLoadProgress(event);
+  }
 }
 
 const RNCWebView = requireNativeComponent('RNCWebView');
